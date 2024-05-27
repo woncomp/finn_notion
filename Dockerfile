@@ -7,17 +7,18 @@ WORKDIR /usr/src/app
 # 复制package.json和package-lock.json（如果存在）
 COPY package*.json ./
 
-# 安装项目依赖
-RUN npm install
-
 # 复制项目文件到工作目录
 COPY . .
 
-# 暴露端口
-EXPOSE 3000
+# 安装项目依赖
+RUN npm install
+RUN npm run build
 
 # 定义环境变量
-ENV PORT 3000
+ENV PORT 3001
+
+# 暴露端口
+EXPOSE $PORT
 
 # 运行应用
-CMD ["webpack", "serve"]
+CMD ["npm", "start"]

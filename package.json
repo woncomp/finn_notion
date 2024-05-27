@@ -5,6 +5,7 @@
   "dependencies": {
     "@marko/express": "^1.0.0",
     "compression": "^1.7.4",
+    "cross-env": "^7.0.3",
     "express": "^4.17.1",
     "marko": "^5.17.2",
     "node-schedule": "^2.1.1",
@@ -25,9 +26,9 @@
   },
   "private": true,
   "scripts": {
-    "build": "rm -rf ./dist && NODE_ENV=production webpack --progress",
+    "build": "rm -rf ./dist && cross-env NODE_ENV=production webpack --progress",
     "dev": "webpack serve",
     "dev:inspect": "INSPECT=1 npm run dev",
-    "start": "NODE_ENV=production node dist/main.js"
+    "start": "cross-env NODE_ENV=production node dist/main.js"
   }
 }
