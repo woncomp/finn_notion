@@ -22,6 +22,25 @@ async function fetch_post(api, obj) {
   return await resp.json();
 }
 
+async function fetch_get(api) {
+  const resp = await fetch(api);
+  return await resp.json();
+}
+
+async function fetchSchema(initialSchema) {
+  const db_data = await fetch_get('/db/create_page');
+
+  const games = initialSchema.game.map(item => {
+    return {
+      checked: db_data.tags_game.includes(item.id),
+      ...item
+    };
+  });
+
+  return {
+    game: games
+  };
+}
 
 export default class {
   onInput(input) {
@@ -36,6 +55,7 @@ export default class {
         bar: true,
         baz: false
       },
+      schema: null,
       dynamicTabs: [
         {
           timestamp: now
@@ -169,12 +189,30 @@ export default class {
   }
 
   async handleGetDbInfo() {
-    const data = await fetch('/notion/databases');
-    console.log(await data.json());
+    const data = await fetch_get('/notion/databases');
+    console.log(data);
+
+    const initialSchema = {
+      game: data.properties.Game.multi_select.options,
+    };
+
+    this.state.schema = await fetchSchema(initialSchema);
   }
 
   async handleCreatePage() {
     const data = await fetch_post('/notion/pages');
     console.log(data);
+  }
+
+  async handleSaveTagsGame() {
+    const tableObj = this.getEl("list_tags_game");
+    var selectedTags = []
+    for (const obj of tableObj.querySelectorAll('tbody input[type="checkbox"]')) {
+      if (obj.checked) {
+        selectedTags.push(obj.id);
+      }
+    }
+    await fetch_post('/db/create_page', { tags_game: selectedTags });
+    this.state.schema = await fetchSchema(this.state.schema);
   }
 };

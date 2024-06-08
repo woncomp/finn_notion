@@ -1,9 +1,47 @@
 <div>
   <h1>Hello!</h1>
-  <app-button label="Find DB" size="normal" variant="primary" onClick("handleFindDb")/>
-  <app-button label="Get Db Info" size="normal" variant="primary" onClick("handleGetDbInfo")/>
-  <app-button label="Create Page" size="normal" variant="primary" onClick("handleCreatePage")/>
   <app-sections>
+    <@section title="Notion">
+      <div>
+        <app-button label="Find DB" size="normal" variant="primary" onClick("handleFindDb")/>
+        <app-button label="Get Db Info" size="normal" variant="primary" onClick("handleGetDbInfo")/>
+        <app-button label="Create Page" size="normal" variant="primary" onClick("handleCreatePage")/>
+      </div>
+      <div>
+        <if(state.schema)>
+          <app-tabs>
+            <@tab label="Tags: Game">
+              <app-button label="Save" size="normal" variant="primary" onClick("handleSaveTagsGame")/>
+              <table>
+                <thead>
+                  <tr>
+                    <td>Selected</td>
+                    <td>Name</td>
+                    <td>GUID</td>
+                  </tr>
+                </thead>
+                <tbody key="list_tags_game">
+                  <for|def| of=state.schema.game>
+                    <tr>
+                      <td>
+                        <if(def.checked)>
+                          <input id=`${def.id}` type="checkbox" checked/>
+                        </if>
+                        <else>
+                          <input id=`${def.id}` type="checkbox"/>
+                        </else>
+                      </td>
+                      <td>${def.name}</td>
+                      <td>${def.id}</td>
+                    </tr>
+                  </for>
+                </tbody>
+              </table>
+            </@tab>
+          </app-tabs>
+        </if>
+      </div>
+    </@section>
     <@section title="Buttons">
       <table>
         <tr>

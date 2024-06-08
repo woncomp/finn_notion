@@ -1,6 +1,5 @@
 
 const NOTION_URL = 'https://api.notion.com';
-// const NOTION_KEY = "secret_aAdaVh7uDno4PcRAQ3EzjYtnDzXmNPhGJXcg5uPGOHO";
 
 const NOTION_VERSION = '2022-06-28';
 

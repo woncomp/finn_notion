@@ -2,6 +2,7 @@
 import url from "url"
 
 import { notion_post } from "../utils/notion_api.js";
+import { getCreatePageDb } from "../utils/db_create_page.js";
 
 /*
   0: Object { id: "0a0245ca-34af-45e2-9895-8d2082be6900", name: "⚪⚪", color: "brown", … }
@@ -27,6 +28,8 @@ function pad(num, size) {
 }
 
 export async function createPage() {
+    const db = await getCreatePageDb();
+
     const data = new Date();
     const yyyy = data.getFullYear();
     const mm = pad(data.getMonth() + 1, 2);
@@ -48,6 +51,7 @@ export async function createPage() {
             "Date": {
                 "start": `${yyyy}-${mm}-${dd}`
             },
+            "Game": db.toGameArray(),
             "Work": {
                 "name": WEEK_DAYS[weekDay].work
             }
