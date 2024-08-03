@@ -7,12 +7,22 @@ export async function scheduleJobs() {
             const d = new Date();
             console.log('scheduleJobs register', d, d.getDate(), d.getHours());
         }
-        const jobNotion = schedule.scheduleJob('0 5 0 * * *', async function(){
+        async function postCreatePageWithRetry(retryCount) {
             const d = new Date();
             console.log('scheduleJobs notion createPage triggered', d, d.getDate(), d.getDay(), d.getHours());
-            const result = await createPage();
-            console.log('scheduleJobs notion createPage', result);
-        });
+            try {
+                const result = await createPage();
+                console.log('scheduleJobs notion createPage', result);
+            } catch (error) {
+                if(retryCount > 0) {
+                    console.log('scheduleJobs notion retry', retryCount);
+                    setTimeout(() => postCreatePageWithRetry(retryCount-1), 6*1000);
+                } else {
+                    console.log('scheduleJobs notion out of retry times');
+                }
+            }
+        }
+        const jobNotion = schedule.scheduleJob('0 5 * * * *', () => postCreatePageWithRetry(5));
         global._scheduledJobs = [jobNotion];
     }
 }
