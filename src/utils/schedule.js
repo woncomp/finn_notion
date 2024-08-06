@@ -22,7 +22,7 @@ export async function scheduleJobs() {
                 }
             }
         }
-        const jobNotion = schedule.scheduleJob('0 5 * * * *', () => postCreatePageWithRetry(5));
+        const jobNotion = schedule.scheduleJob('0 5 0 * * *', () => postCreatePageWithRetry(5));
         global._scheduledJobs = [jobNotion];
     }
 }
