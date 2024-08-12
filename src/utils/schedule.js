@@ -15,8 +15,9 @@ export async function scheduleJobs() {
                 console.log('scheduleJobs notion createPage', result);
             } catch (error) {
                 if(retryCount > 0) {
+                    console.log(error);
                     console.log('scheduleJobs notion retry', retryCount);
-                    setTimeout(() => postCreatePageWithRetry(retryCount-1), 6*1000);
+                    setTimeout(() => postCreatePageWithRetry(retryCount-1), 60*60*1000);
                 } else {
                     console.log('scheduleJobs notion out of retry times');
                 }
