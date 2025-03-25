@@ -15,7 +15,7 @@ RUN npm install
 RUN npm run build
 
 # 定义环境变量
-ENV PORT 3001
+ENV PORT 3002
 
 # 暴露端口
 EXPOSE $PORT
